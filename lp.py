@@ -16,7 +16,7 @@ op2=[]
 op3=[]
 
 entity_count, relation_count = 0, 0
-with open('./PubMed/node.dat','r') as original_meta_file:
+with open('./DBLP/node.dat','r') as original_meta_file:
     for line in original_meta_file:
         temp1,temp2,temp3=line.split('\t')
         op1.append(temp1)
@@ -35,9 +35,9 @@ def load(emb_file_path):
         
     return train_para, emb_dict  
 device = torch.device("cuda:0")
-emb_file_path = './PubMed/emb.dat'
+emb_file_path = './DBLP/emb.dat'
 train_para, emb_dict = load(emb_file_path)
-link_test_file = './PubMed/sample.dat'
+link_test_file = './DBLP/sample.dat'
 pos_edges = []
 neg_edges = []
 with open(link_test_file,'r') as original_meta_file:
@@ -101,13 +101,13 @@ for epoch in range(1000):
     optimizer.step()
 emb_trained = model.embeddings.weight
 emb_trained_list = emb_trained.cpu().detach().numpy()
-with open('./PubMed/sample_emb.dat', 'w') as file:
+with open('./DBLP/sample_emb.dat', 'w') as file:
     file.write('pubmed41\n')
     for i in range(len(op2)):
         file.write(f'{i}\t')
         file.write(' '.join(emb_trained_list[i].astype(str)))
         file.write('\n')
-emb_file_path = './PubMed/sample_emb.dat'
+emb_file_path = './DBLP/sample_emb.dat'
 train_para, emb_dict = load(emb_file_path)
 class MLP_Decoder(nn.Module):
   def __init__(self, hdim, nclass):

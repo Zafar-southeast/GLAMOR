@@ -234,7 +234,7 @@ def cross_validation(edge_embs, edge_labels):
     print(auc)
     print(mrr)
     return np.mean(auc), np.mean(mrr)
-link_test_file= './PubMed/link.dat.test'
+link_test_file= './DBLP/link.dat.test'
 link_test_path = f'{link_test_file}'
 scores = lp_evaluate(link_test_path, emb_dict)
 print(scores)

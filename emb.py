@@ -30,7 +30,7 @@ op1=[]
 op2=[]
 op3=[]
 
-with open('./PubMed/node.dat','r') as original_meta_file:
+with open('./DBLP/node.dat','r') as original_meta_file:
     for line in original_meta_file:
         temp1,temp2,temp3=line.split('\t')
         op1.append(int(temp1))
@@ -39,7 +39,7 @@ with open('./PubMed/node.dat','r') as original_meta_file:
 
 G=[[] for i in range(len(op3))]
 
-with open('./PubMed/link.dat', 'r') as original_meta_file:
+with open('./DBLP/link.dat', 'r') as original_meta_file:
     for line in original_meta_file:
         start, end, edge_type, edge_class = line.split('\t')
         G[int(start)].append([int(end),int(edge_type)])
@@ -83,7 +83,7 @@ line_name[7]="with"
 line_name[8]="with"
 line_name[9]="and"
 
-with open('./PubMed/output.txt', 'w') as f:
+with open('./DBLP/output.txt', 'w') as f:
     for i in range(len(patient_patient_path)):
         print(op2[patient_patient_path[i][0][0]],line_name[patient_patient_path[i][1][1]],op2[patient_patient_path[i][1][0]],end='',file=f)
         for j in range(1,len(patient_patient_path[i])-2):
@@ -93,23 +93,23 @@ with open('./PubMed/output.txt', 'w') as f:
         print("\n",end='',file=f)
 
 
-with open('./PubMed/output.txt', 'r') as file:
+with open('./DBLP/output.txt', 'r') as file:
     corpus = [line.rstrip("\n") for line in file.readlines()] 
     print(len(corpus))
 
 train_text, val_text = train_test_split(corpus, test_size=0.15, random_state=42)
 
-with open('./PubMed/train_corpus.txt', 'w') as file:
+with open('./DBLP/train_corpus.txt', 'w') as file:
     for paragraph in train_text:
         file.write(paragraph + "\n")
         
-with open('./PubMed/val_corpus.txt', 'w') as file:
+with open('./DBLP/val_corpus.txt', 'w') as file:
     for paragraph in val_text:
         file.write(paragraph + "\n")
 
 
-datasets = load_dataset("text", data_files={"train": './PubMed/train_corpus.txt',
-                                            "validation": './PubMed/val_corpus.txt'})
+datasets = load_dataset("text", data_files={"train": './DBLP/train_corpus.txt',
+                                            "validation": './DBLP/val_corpus.txt'})
 
 card = "distilroberta-base"
 
@@ -160,7 +160,7 @@ op3=[]
 
 entity_count, relation_count = 0, 0
 
-with open('./PubMed/node.dat','r') as original_meta_file:
+with open('./DBLP/node.dat','r') as original_meta_file:
     for line in original_meta_file:
         temp1,temp2,temp3=line.split('\t')
         op1.append(temp1)
@@ -190,7 +190,7 @@ for i in range(len(op2)):
     word = op2[i]
     emb[i] = get_word_embeddings(word,device)
 
-with open('./PubMed/emb.dat', 'w') as file:
+with open('./DBLP/emb.dat', 'w') as file:
     file.write('pubmed\n')
     for i in range(len(op2)):
         file.write(f'{i}\t')
